@@ -10,8 +10,11 @@ namespace _13PractMobilBD
 {
     public class APIMetods1
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
-        private static readonly string _apiBaseUrl = "http://192.168.26.17:7077";
+        private static readonly HttpClient _httpClient = new HttpClient(new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert,chain, errors) => true
+        });
+        private static readonly string _apiBaseUrl = "http://192.168.26.17:7077/";
 
         public static T Get<T>(string endPoint)
         {

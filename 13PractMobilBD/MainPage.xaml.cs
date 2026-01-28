@@ -2,23 +2,35 @@
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        protected override async void OnAppearing()
         {
-            count++;
+            base.OnAppearing();
+            lvService.ItemsSource = APIMetods1.Get<List<Service>>("api/Services");
+            var gg= APIMetods1.Get<List<Service>>("api/Services");
+        }
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+        private async void OnAddServiceClicked(object sender, EventArgs e)
+        {
+            // Переход на страницу добавления/редактирования
+            await Navigation.PushModalAsync(new AddEditServicePage());
+        }
+
+        private async void OnServiceSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is Service selectedService)
+            {
+                // Передача выбранной услуги на страницу редактирования
+                Data.Service = selectedService;
+                await Navigation.PushModalAsync(new AddEditServicePage());
+                lvService.SelectedItem = null; // Сброс выбора
+            }
         }
     }
 
