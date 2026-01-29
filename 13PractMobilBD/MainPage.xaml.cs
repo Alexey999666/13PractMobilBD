@@ -1,37 +1,71 @@
-﻿namespace _13PractMobilBD
+﻿using System;
+using Microsoft.Maui.Controls;
+
+namespace _13PractMobilBD
 {
     public partial class MainPage : ContentPage
     {
         public MainPage()
         {
             InitializeComponent();
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            lvService.ItemsSource = APIMetods1.Get<List<Service>>("api/Services");
-            var gg= APIMetods1.Get<List<Service>>("api/Services");
+            LoadServices(); 
         }
 
         
 
+        private void LoadServices()
+        {
+            try
+            {
+                var services = APIMetods1.Get<List<Service>>("api/Services");
+                if (services != null)
+                {
+                   
+                    lvService.ItemsSource = null;
+                    lvService.ItemsSource = services;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка загрузки: {ex.Message}");
+            }
+        }
+
         private async void OnAddServiceClicked(object sender, EventArgs e)
         {
-            // Переход на страницу добавления/редактирования
-            await Navigation.PushModalAsync(new AddEditServicePage());
+           
+            var editPage = new AddEditServicePage();
+
+           
+            editPage.Disappearing += (s, args) =>
+            {
+                
+                LoadServices();
+            };
+
+            await Navigation.PushModalAsync(editPage);
         }
 
         private async void OnServiceSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is Service selectedService)
             {
-                // Передача выбранной услуги на страницу редактирования
+                lvService.SelectedItem = null; 
+
+              
                 Data.Service = selectedService;
-                await Navigation.PushModalAsync(new AddEditServicePage());
-                lvService.SelectedItem = null; // Сброс выбора
+
+                var editPage = new AddEditServicePage();
+
+               
+                editPage.Disappearing += (s, args) =>
+                {
+                   
+                    LoadServices();
+                };
+
+                await Navigation.PushModalAsync(editPage);
             }
         }
     }
-
 }

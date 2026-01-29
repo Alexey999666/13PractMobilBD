@@ -1,64 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="_13PractMobilBD.MainPage">
 
     <ScrollView>
         <StackLayout Padding="10">
-
-            <!-- Кнопка добавления новой услуги -->
             <Button Text="Добавить услугу"
-                Clicked="OnAddServiceClicked"
-                Margin="10"
-                BackgroundColor="#2196F3"
-                TextColor="White"
-                CornerRadius="5"
-                HeightRequest="45" />
+                    Clicked="OnAddServiceClicked"
+                    Margin="10"
+                    BackgroundColor="DarkViolet"
+                    TextColor="White"
+                    CornerRadius="5"
+                    HeightRequest="45" />
 
-            <!-- ListView для отображения списка услуг -->
+            
             <ListView x:Name="lvService"
-                  ItemSelected="OnServiceSelected"
-                  HasUnevenRows="True"
-                  SeparatorVisibility="None">
+                      ItemSelected="OnServiceSelected"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="Default">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Frame Padding="15"
-                               Margin="5"
-                               CornerRadius="10"
-                               BackgroundColor="#F5F5F5"
-                               BorderColor="#E0E0E0">
-
-                                <StackLayout>
-                                    <!-- Code и Name в одной строке -->
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Code, StringFormat='Код: {0}'}"
+                            <StackLayout Padding="15" Margin="5">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Code, StringFormat='Код: {0}'}"
                                            FontSize="14"
                                            TextColor="#555"
                                            HorizontalOptions="StartAndExpand" />
 
-                                        <Label Text="{Binding Name}"
+                                    <Label Text="{Binding Name}"
                                            FontSize="16"
                                            FontAttributes="Bold"
                                            TextColor="#333"
                                            HorizontalOptions="EndAndExpand" />
-                                    </StackLayout>
+                                </StackLayout>
 
-                                    <!-- Price под ними -->
-                                    <Label Text="{Binding Price, StringFormat='Цена: {0:C}'}"
+                                <Label Text="{Binding Price, StringFormat='Цена: {0:C}'}"
                                        FontSize="14"
                                        TextColor="#777"
                                        Margin="0,5,0,0" />
-                                </StackLayout>
-
-                            </Frame>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
         </StackLayout>
     </ScrollView>
-
 </ContentPage>
