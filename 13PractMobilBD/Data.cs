@@ -9,5 +9,8 @@ namespace _13PractMobilBD
     public static class Data
     {
         public static Service? Service;
+        public static ClientServiceInfoDTO? ClientServiceInfo;
+        public static ClientServiceDTO? ClientService;
+        public static Client? SelectedClient;
     }
 }

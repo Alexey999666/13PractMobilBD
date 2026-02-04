@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="_13PractMobilBD.ClientServicesPage"
+             Title="Записи на услуги">
+
+    <ScrollView>
+        <StackLayout Padding="10">
+            <!-- Кнопка добавления -->
+            <Button Text="Добавить запись"
+                    Clicked="OnAddClicked"
+                    Margin="10"
+                    BackgroundColor="DarkViolet"
+                    TextColor="White"
+                    CornerRadius="5"
+                    HeightRequest="45" />
+
+            <!-- Список записей -->
+            <ListView x:Name="lvClientServices"
+                      ItemSelected="OnItemSelected"
+                      HasUnevenRows="True"
+                      SeparatorVisibility="Default">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="15" Margin="5" BackgroundColor="#F5F5F5">
+                                <!-- Клиент -->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Клиент:"
+                                           FontSize="14"
+                                           TextColor="#555"
+                                           WidthRequest="80" />
+                                    <Label Text="{Binding LastName}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="#333"
+                                           HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+
+                                <!-- Телефон -->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Телефон:"
+                                           FontSize="14"
+                                           TextColor="#555"
+                                           WidthRequest="80" />
+                                    <Label Text="{Binding Phone}"
+                                           FontSize="14"
+                                           TextColor="#333"
+                                           HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+
+                                <!-- Услуга и цена -->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Услуга:"
+                                           FontSize="14"
+                                           TextColor="#555"
+                                           WidthRequest="80" />
+                                    <Label Text="{Binding ServiceName}"
+                                           FontSize="14"
+                                           TextColor="#333"
+                                           HorizontalOptions="StartAndExpand" />
+                                    <Label Text="{Binding Price, StringFormat='{0:C}'}"
+                                           FontSize="14"
+                                           TextColor="Green"
+                                           HorizontalOptions="End" />
+                                </StackLayout>
+
+                                <!-- Дата и время -->
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Дата:"
+                                           FontSize="14"
+                                           TextColor="#555"
+                                           WidthRequest="80" />
+                                    <Label Text="{Binding AppointmentDateTime, StringFormat='{0:dd.MM.yyyy HH:mm}'}"
+                                           FontSize="14"
+                                           FontAttributes="Bold"
+                                           TextColor="DarkBlue"
+                                           HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

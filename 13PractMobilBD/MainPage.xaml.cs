@@ -45,7 +45,11 @@ namespace _13PractMobilBD
 
             await Navigation.PushModalAsync(editPage);
         }
-
+        private async void OnClientServicesClicked(object sender, EventArgs e)
+        {
+            var clientServicesPage = new ClientServicesPage();
+            await Navigation.PushAsync(clientServicesPage);
+        }
         private async void OnServiceSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is Service selectedService)

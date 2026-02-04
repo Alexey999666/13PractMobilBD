@@ -55,5 +55,37 @@ namespace _13PractMobilBD
             var result = _httpClient.DeleteAsync(_apiBaseUrl + endPoint+ "/"+ id.ToString()).Result;
             return result.ToString();
         }
+        // PUT для ClientServices (составной ключ)
+        public static string Put<T>(T body, string endpoint)
+        {
+            var json = JsonConvert.SerializeObject(body);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            // endpoint уже содержит полный путь с параметрами
+            var result = _httpClient.PutAsync(_apiBaseUrl + endpoint, content).Result;
+
+            if (!result.IsSuccessStatusCode)
+            {
+                var errorContent = result.Content.ReadAsStringAsync().Result;
+                throw new HttpRequestException($"Ошибка {result.StatusCode}: {errorContent}");
+            }
+
+            return result.ToString();
+        }
+
+        // DELETE для ClientServices (составной ключ)
+        public static string Delete(string endpoint)
+        {
+            // endpoint уже содержит полный путь с параметрами
+            var result = _httpClient.DeleteAsync(_apiBaseUrl + endpoint).Result;
+
+            if (!result.IsSuccessStatusCode)
+            {
+                var errorContent = result.Content.ReadAsStringAsync().Result;
+                throw new HttpRequestException($"Ошибка {result.StatusCode}: {errorContent}");
+            }
+
+            return result.ToString();
+        }
     }
 }

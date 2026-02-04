@@ -4,6 +4,14 @@
 
     <ScrollView>
         <StackLayout Padding="10">
+       
+            <Button Text="Записи на услуги"
+        Clicked="OnClientServicesClicked"
+        Margin="10"
+        BackgroundColor="DarkBlue"
+        TextColor="White"
+        CornerRadius="5"
+        HeightRequest="45" />
             <Button Text="Добавить услугу"
                     Clicked="OnAddServiceClicked"
                     Margin="10"
