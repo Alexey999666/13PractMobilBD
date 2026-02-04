@@ -8,7 +8,7 @@
             <Button Text="Записи на услуги"
         Clicked="OnClientServicesClicked"
         Margin="10"
-        BackgroundColor="DarkBlue"
+        BackgroundColor="DarkViolet"
         TextColor="White"
         CornerRadius="5"
         HeightRequest="45" />
