@@ -31,6 +31,7 @@ namespace _13PractMobilBD
         private async void OnAddClicked(object sender, EventArgs e)
         {
             Data.ClientServiceInfo = null;
+            Data.ClientService = null;
             var editPage = new AddEditClientServicePage();
             editPage.Disappearing += (s, args) => LoadClientServices();
             await Navigation.PushModalAsync(editPage);
@@ -42,7 +43,7 @@ namespace _13PractMobilBD
             {
                 lvClientServices.SelectedItem = null;
 
-                // Создаем DTO для редактирования
+               
                 Data.ClientService = new ClientServiceDTO
                 {
                     ClientId = selectedItem.ClientId,
@@ -50,11 +51,11 @@ namespace _13PractMobilBD
                     AppointmentDateTime = selectedItem.AppointmentDateTime
                 };
 
-                Data.ClientServiceInfo = selectedItem;
-
                 var editPage = new AddEditClientServicePage();
                 editPage.Disappearing += (s, args) => LoadClientServices();
                 await Navigation.PushModalAsync(editPage);
+
+                
             }
         }
 

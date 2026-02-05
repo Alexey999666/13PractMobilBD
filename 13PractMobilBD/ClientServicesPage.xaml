@@ -6,7 +6,7 @@
 
     <ScrollView>
         <StackLayout Padding="10">
-            <!-- Кнопка добавления -->
+       
             <Button Text="Добавить запись"
                     Clicked="OnAddClicked"
                     Margin="10"
@@ -15,7 +15,7 @@
                     CornerRadius="5"
                     HeightRequest="45" />
 
-            <!-- Список записей -->
+         
             <ListView x:Name="lvClientServices"
                       ItemSelected="OnItemSelected"
                       HasUnevenRows="True"
@@ -25,7 +25,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="15" Margin="5" BackgroundColor="#F5F5F5">
-                                <!-- Клиент -->
+                                
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Клиент:"
                                            FontSize="14"
@@ -38,7 +38,7 @@
                                            HorizontalOptions="StartAndExpand" />
                                 </StackLayout>
 
-                                <!-- Телефон -->
+                                
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Телефон:"
                                            FontSize="14"
@@ -50,7 +50,7 @@
                                            HorizontalOptions="StartAndExpand" />
                                 </StackLayout>
 
-                                <!-- Услуга и цена -->
+                                
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Услуга:"
                                            FontSize="14"
@@ -66,7 +66,7 @@
                                            HorizontalOptions="End" />
                                 </StackLayout>
 
-                                <!-- Дата и время -->
+                              
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="Дата:"
                                            FontSize="14"

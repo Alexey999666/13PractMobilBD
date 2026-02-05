@@ -17,7 +17,11 @@ namespace _13PractMobilBD
 
         private async void InitializePage()
         {
-            // Загружаем списки клиентов и услуг
+          
+           
+
+            _currentClientService = Data.ClientService;
+            _isEditMode = (_currentClientService != null);
             try
             {
                 var clients = APIMetods1.Get<List<Client>>("api/Clients");
@@ -34,17 +38,16 @@ namespace _13PractMobilBD
                 await DisplayAlert("Ошибка", $"Не удалось загрузить данные: {ex.Message}", "OK");
             }
 
-            // Проверяем режим редактирования
-            _currentClientService = Data.ClientService;
-            _isEditMode = (_currentClientService != null);
-
             if (_isEditMode)
             {
+
+                _currentClientService = Data.ClientService; 
+
                 Title = "Редактировать запись";
                 btnSave.Text = "Обновить";
                 btnDelete.IsVisible = true;
 
-                // Устанавливаем выбранные значения
+               
                 if (pickerClient.ItemsSource is List<Client> clientsList)
                 {
                     var selectedClient = clientsList.FirstOrDefault(c => c.CardNumber == _currentClientService.ClientId);
@@ -61,6 +64,7 @@ namespace _13PractMobilBD
 
                 datePicker.Date = _currentClientService.AppointmentDateTime.Date;
                 timePicker.Time = _currentClientService.AppointmentDateTime.TimeOfDay;
+                Data.ClientService = null;
             }
             else
             {
@@ -73,7 +77,7 @@ namespace _13PractMobilBD
 
         private async void OnSaveClicked(object sender, EventArgs e)
         {
-            // Проверки
+            
             if (pickerClient.SelectedItem == null)
             {
                 await DisplayAlert("Ошибка", "Выберите клиента", "OK");
@@ -89,38 +93,41 @@ namespace _13PractMobilBD
             var selectedClient = (Client)pickerClient.SelectedItem;
             var selectedService = (Service)pickerService.SelectedItem;
 
-            // Собираем дату и время
+            
             DateTime appointmentDateTime = datePicker.Date + timePicker.Time;
 
             try
             {
+                var dto = new ClientServiceDTO
+                {
+                    ClientId = selectedClient.CardNumber,
+                    ServiceId = selectedService.Code,
+                    AppointmentDateTime = appointmentDateTime
+                };
+
                 if (_isEditMode && _currentClientService != null)
                 {
-                    // Обновление существующей записи
-                    var dto = new ClientServiceDTO
+                    
+                   
+                    if (dto.ClientId != _currentClientService.ClientId ||
+                        dto.AppointmentDateTime != _currentClientService.AppointmentDateTime)
                     {
-                        ClientId = selectedClient.CardNumber,
-                        ServiceId = selectedService.Code,
-                        AppointmentDateTime = appointmentDateTime
-                    };
-
-                    // Используем PUT с двумя параметрами
-                    string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{_currentClientService.AppointmentDateTime:yyyy-MM-ddTHH:mm:ss}";
-                    var response = APIMetods1.Put(dto, endpoint);
-
-                    await DisplayAlert("Успех", "Запись обновлена", "OK");
+                        
+                        APIMetods1.Post(dto, "api/ClientServices");
+                        await DisplayAlert("Успех", "Создана новая запись (изменены ключевые поля)", "OK");
+                    }
+                    else
+                    {
+                      
+                        string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{_currentClientService.AppointmentDateTime:yyyy-MM-ddTHH:mm:ss}";
+                        APIMetods1.Put(dto, endpoint);
+                        await DisplayAlert("Успех", "Запись обновлена", "OK");
+                    }
                 }
                 else
                 {
-                    // Создание новой записи
-                    var dto = new ClientServiceDTO
-                    {
-                        ClientId = selectedClient.CardNumber,
-                        ServiceId = selectedService.Code,
-                        AppointmentDateTime = appointmentDateTime
-                    };
-
-                    var result = APIMetods1.Post(dto, "api/ClientServices");
+                    
+                    APIMetods1.Post(dto, "api/ClientServices");
                     await DisplayAlert("Успех", "Запись добавлена", "OK");
                 }
 
@@ -145,9 +152,12 @@ namespace _13PractMobilBD
             {
                 try
                 {
-                    // DELETE с двумя параметрами
-                    string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{_currentClientService.AppointmentDateTime:yyyy-MM-ddTHH:mm:ss}";
-                    var result = APIMetods1.Delete(endpoint);
+                    string formattedDateTime = _currentClientService.AppointmentDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+                    string encodedDateTime = Uri.EscapeDataString(formattedDateTime);
+
+                    string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{encodedDateTime}";
+                    
+                    APIMetods1.Delete(endpoint);
 
                     await DisplayAlert("Успех", "Запись удалена", "OK");
                     await Navigation.PopModalAsync();

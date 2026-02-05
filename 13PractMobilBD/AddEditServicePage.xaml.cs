@@ -65,7 +65,6 @@ namespace _13PractMobilBD
             {
                 if (_isEditMode && _currentService != null)
                 {
-                   
                     var serviceToUpdate = new Service
                     {
                         Code = _currentService.Code,
@@ -74,21 +73,19 @@ namespace _13PractMobilBD
                     };
 
                     
-                    var result = APIMetods1.Put(serviceToUpdate, serviceToUpdate.Code, "api/Services");
-
-                    await DisplayAlert("Успех", "Услуга обновлена", "OK");
+                    var result = APIMetods1.PutWithId(serviceToUpdate, serviceToUpdate.Code, "api/Services");
                 }
                 else
                 {
-                   
                     var newService = new Service
                     {
                         Name = txtName.Text.Trim(),
                         Price = price
                     };
 
-                   
                     var result = APIMetods1.Post(newService, "api/Services");
+                
+                
 
                     await DisplayAlert("Успех", "Услуга добавлена", "OK");
                 }
@@ -116,8 +113,8 @@ namespace _13PractMobilBD
             {
                 try
                 {
-                   
-                    var result = APIMetods1.Delete(_currentService.Code, "api/Services");
+
+                    var result = APIMetods1.DeleteWithId(_currentService.Code, "api/Services");
 
                     await DisplayAlert("Успех", "Услуга удалена", "OK");
 

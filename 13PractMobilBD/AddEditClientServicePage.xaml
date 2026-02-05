@@ -7,7 +7,7 @@
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
 
-            <!-- Выбор клиента -->
+            
             <StackLayout>
                 <Label Text="Клиент:" 
                        FontSize="14" 
@@ -18,7 +18,7 @@
                         FontSize="16"/>
             </StackLayout>
 
-            <!-- Выбор услуги -->
+           
             <StackLayout>
                 <Label Text="Услуга:" 
                        FontSize="14" 
@@ -29,7 +29,7 @@
                         FontSize="16"/>
             </StackLayout>
 
-            <!-- Дата и время -->
+         
             <StackLayout>
                 <Label Text="Дата и время:" 
                        FontSize="14" 
@@ -40,7 +40,7 @@
                             FontSize="16"/>
             </StackLayout>
 
-            <!-- Кнопки -->
+           
             <StackLayout Spacing="10" Margin="0,20,0,0">
                 <Button x:Name="btnSave"
                         Text="Сохранить"
