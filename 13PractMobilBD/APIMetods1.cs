@@ -63,7 +63,7 @@ namespace _13PractMobilBD
             }
         }
 
-        // PUT для обычных сущностей (с одним ID) - например Services, Clients
+       
         public static string PutWithId<T>(T body, int id, string endPoint)
         {
             try
@@ -86,30 +86,7 @@ namespace _13PractMobilBD
             }
         }
 
-        // PUT для составных ключей (ClientServices) - endpoint уже содержит полный путь
-        public static string Put<T>(T body, string fullEndpoint)
-        {
-            try
-            {
-                var json = JsonConvert.SerializeObject(body);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var result = _httpClient.PutAsync(_apiBaseUrl + fullEndpoint, content).Result;
-
-                if (!result.IsSuccessStatusCode)
-                {
-                    var errorContent = result.Content.ReadAsStringAsync().Result;
-                    throw new HttpRequestException($"Ошибка PUT {fullEndpoint}: {result.StatusCode} - {errorContent}");
-                }
-
-                return result.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpRequestException($"Ошибка при PUT запросе: {ex.Message}");
-            }
-        }
-
-        // DELETE для обычных сущностей (с одним ID)
+       
         public static string DeleteWithId(int id, string endPoint)
         {
             try
@@ -130,25 +107,8 @@ namespace _13PractMobilBD
             }
         }
 
-        // DELETE для составных ключей (ClientServices) 
-        public static string Delete(string fullEndpoint)
-        {
-            try
-            {
-                var result = _httpClient.DeleteAsync(_apiBaseUrl + fullEndpoint).Result;
+        
 
-                if (!result.IsSuccessStatusCode)
-                {
-                    var errorContent = result.Content.ReadAsStringAsync().Result;
-                    throw new HttpRequestException($"Ошибка DELETE {fullEndpoint}: {result.StatusCode} - {errorContent}");
-                }
-
-                return result.ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpRequestException($"Ошибка при DELETE запросе: {ex.Message}");
-            }
-        }
+        
     }
 }

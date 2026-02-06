@@ -27,6 +27,18 @@
                             <StackLayout Padding="15" Margin="5" BackgroundColor="#F5F5F5">
                                 
                                 <StackLayout Orientation="Horizontal">
+                                    <Label Text="ID:"
+                                           FontSize="12"
+                                           TextColor="#777"
+                                           WidthRequest="40" />
+                                    <Label Text="{Binding IdclientServices}"
+                                           FontSize="12"
+                                           FontAttributes="Bold"
+                                           TextColor="#555"
+                                           HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+
+                                <StackLayout Orientation="Horizontal">
                                     <Label Text="Клиент:"
                                            FontSize="14"
                                            TextColor="#555"

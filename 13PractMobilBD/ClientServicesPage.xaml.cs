@@ -32,6 +32,7 @@ namespace _13PractMobilBD
         {
             Data.ClientServiceInfo = null;
             Data.ClientService = null;
+            Data.SelectedClientServiceId = null;
             var editPage = new AddEditClientServicePage();
             editPage.Disappearing += (s, args) => LoadClientServices();
             await Navigation.PushModalAsync(editPage);
@@ -43,9 +44,10 @@ namespace _13PractMobilBD
             {
                 lvClientServices.SelectedItem = null;
 
-               
+                Data.SelectedClientServiceId = selectedItem.IdclientServices;
                 Data.ClientService = new ClientServiceDTO
                 {
+                    IdclientServices = selectedItem.IdclientServices,
                     ClientId = selectedItem.ClientId,
                     ServiceId = selectedItem.ServiceId,
                     AppointmentDateTime = selectedItem.AppointmentDateTime

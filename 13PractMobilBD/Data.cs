@@ -12,5 +12,6 @@ namespace _13PractMobilBD
         public static ClientServiceInfoDTO? ClientServiceInfo;
         public static ClientServiceDTO? ClientService;
         public static Client? SelectedClient;
+        public static int? SelectedClientServiceId; 
     }
 }

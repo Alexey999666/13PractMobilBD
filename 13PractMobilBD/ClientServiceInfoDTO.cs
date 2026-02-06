@@ -8,6 +8,7 @@ namespace _13PractMobilBD
 {
     public class ClientServiceInfoDTO
     {
+        public int IdclientServices { get; set; }
         public int ClientId { get; set; }
         public int ServiceId { get; set; }
         public string LastName { get; set; } = null!;

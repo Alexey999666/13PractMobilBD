@@ -8,6 +8,7 @@ namespace _13PractMobilBD
     {
         private bool _isEditMode = false;
         private ClientServiceDTO _currentClientService;
+        private int? _currentId;
 
         public AddEditClientServicePage()
         {
@@ -17,11 +18,11 @@ namespace _13PractMobilBD
 
         private async void InitializePage()
         {
-          
-           
+
+            _currentId = Data.SelectedClientServiceId;
 
             _currentClientService = Data.ClientService;
-            _isEditMode = (_currentClientService != null);
+            _isEditMode = (_currentClientService != null && _currentId.HasValue);
             try
             {
                 var clients = APIMetods1.Get<List<Client>>("api/Clients");
@@ -38,10 +39,10 @@ namespace _13PractMobilBD
                 await DisplayAlert("Ошибка", $"Не удалось загрузить данные: {ex.Message}", "OK");
             }
 
-            if (_isEditMode)
+            if (_isEditMode && _currentClientService != null)
             {
 
-                _currentClientService = Data.ClientService; 
+                
 
                 Title = "Редактировать запись";
                 btnSave.Text = "Обновить";
@@ -65,6 +66,7 @@ namespace _13PractMobilBD
                 datePicker.Date = _currentClientService.AppointmentDateTime.Date;
                 timePicker.Time = _currentClientService.AppointmentDateTime.TimeOfDay;
                 Data.ClientService = null;
+                Data.SelectedClientServiceId = null;
             }
             else
             {
@@ -105,24 +107,15 @@ namespace _13PractMobilBD
                     AppointmentDateTime = appointmentDateTime
                 };
 
-                if (_isEditMode && _currentClientService != null)
+                if (_isEditMode && _currentId.HasValue)
                 {
-                    
-                   
-                    if (dto.ClientId != _currentClientService.ClientId ||
-                        dto.AppointmentDateTime != _currentClientService.AppointmentDateTime)
-                    {
-                        
-                        APIMetods1.Post(dto, "api/ClientServices");
-                        await DisplayAlert("Успех", "Создана новая запись (изменены ключевые поля)", "OK");
-                    }
-                    else
-                    {
-                      
-                        string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{_currentClientService.AppointmentDateTime:yyyy-MM-ddTHH:mm:ss}";
-                        APIMetods1.Put(dto, endpoint);
-                        await DisplayAlert("Успех", "Запись обновлена", "OK");
-                    }
+
+
+                    dto.IdclientServices = _currentId.Value;
+
+                    // Используем стандартный PUT с ID
+                    APIMetods1.PutWithId(dto, _currentId.Value, "api/ClientServices");
+                    await DisplayAlert("Успех", "Запись обновлена", "OK");
                 }
                 else
                 {
@@ -141,7 +134,7 @@ namespace _13PractMobilBD
 
         private async void OnDeleteClicked(object sender, EventArgs e)
         {
-            if (_currentClientService == null)
+            if (!_currentId.HasValue)
                 return;
 
             bool answer = await DisplayAlert("Подтверждение",
@@ -152,13 +145,8 @@ namespace _13PractMobilBD
             {
                 try
                 {
-                    string formattedDateTime = _currentClientService.AppointmentDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-                    string encodedDateTime = Uri.EscapeDataString(formattedDateTime);
-
-                    string endpoint = $"api/ClientServices/{_currentClientService.ClientId}/{encodedDateTime}";
-                    
-                    APIMetods1.Delete(endpoint);
-
+                   
+                    APIMetods1.DeleteWithId(_currentId.Value, "api/ClientServices");
                     await DisplayAlert("Успех", "Запись удалена", "OK");
                     await Navigation.PopModalAsync();
                 }
